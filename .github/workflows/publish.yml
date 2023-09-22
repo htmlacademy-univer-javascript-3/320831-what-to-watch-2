@@ -29,7 +29,7 @@ jobs:
       - name: Deploy build to Github Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: build
+          folder: dist
           clean: true
           git-config-name: "keksobot"
           git-config-email: "github+keksobot@htmlacademy.ru"

@@ -18,13 +18,13 @@ jobs:
       - name: Build
         run: |
           NODE_ENV=development npm install && npm run build --if-present
-          if [[ $(find . -maxdepth 1 -type d -name 'build') == '' ]]
+          if [[ $(find . -maxdepth 1 -type d -name 'dist') == '' ]]
           then
-            cp -r public build
+            cp -r public dist
           fi
           mkdir actions_artifacts
           echo "prev.event.number=${{ github.event.number }}" > actions_artifacts/env
-          mv build actions_artifacts
+          mv dist actions_artifacts
 
       - name: Save build
         uses: actions/upload-artifact@master
