@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import LOCALE from './Page404.locale';
+import LOCALE from './page404.locale';
 
 const Page404: React.FC = () => (
   <>

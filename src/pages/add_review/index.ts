@@ -1,1 +1,1 @@
-export { default } from './AddReview';
+export { default } from './add-review';

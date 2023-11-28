@@ -1,1 +1,1 @@
-export { default } from './SmallFilmCard';
+export { default } from './small-film-card';

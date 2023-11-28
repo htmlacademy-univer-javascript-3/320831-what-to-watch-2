@@ -1,8 +1,14 @@
-import { ImageProps } from '../../types';
-
 export interface IFilm {
-	poster: ImageProps;
+	id: string;
 	title: string;
+	thumbnailUrl: string;
+	duration: string;
+	uploadTime: string;
+	views: string;
+	author: string;
+	videoUrl: string;
+	description: string;
+	subscriber: string;
+	isLive: boolean;
 	genre: string;
-	year: number;
 }
