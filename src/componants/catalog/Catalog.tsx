@@ -1,11 +1,11 @@
 import React from 'react';
 import GENRES from '../../data/constants/genres';
 import SmallFilmCard from '../small-film-card';
-import LOCALE from './Catalog.locale';
-import GenresItem from './GenresItem';
-import { CatalogProps } from './Catalog.types';
+import LOCALE from './catalog.locale';
+import GenresItem from './genres-item';
+import { CatalogProps } from './catalog.types';
 
-const Catalog: React.FC<CatalogProps> = ({isNeededGenres, cardList}) => (
+const Catalog: React.FC<CatalogProps> = ({ isNeededGenres, filmList }) => (
   <section className="catalog">
     <h2 className="catalog__title visually-hidden">
       {LOCALE.TITLE}
@@ -20,15 +20,18 @@ const Catalog: React.FC<CatalogProps> = ({isNeededGenres, cardList}) => (
       : null}
 
     <div className="catalog__films-list">
-      {cardList.map((card) => <SmallFilmCard {...card} key={card.title} />)}
+      {filmList.map((card) =>
+        <SmallFilmCard {...card} key={card.title} />
+      )}
     </div>
 
-    {cardList.length >= 20 ?
+    {filmList.length >= 20 ?
       <div className="catalog__more">
         <button className="catalog__button" type="button">
           {LOCALE.BUTTON}
         </button>
-      </div> : null}
+      </div>
+      : null}
   </section>
 
 );

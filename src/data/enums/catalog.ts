@@ -1,4 +1,4 @@
-enum Catalog {
+const enum Catalog {
 	All = 'All genres',
 	Comedies = 'Comedies',
 	Crime = 'Crime',

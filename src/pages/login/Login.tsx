@@ -1,7 +1,7 @@
 import React from 'react';
-import Footer from '../../componants/footer/Footer';
+import Footer from '../../componants/footer/footer';
 import Logo from '../../componants/logo';
-import LOCALE from './Login.locale';
+import LOCALE from './login.locale';
 
 const isError = false;
 const isValid = false;
