@@ -1,10 +1,10 @@
 import React from 'react';
 import './main.css';
-import Pages from '../pages';
+import AppRouter from '../componants/routers';
 
 
 const App: React.FC = () => (
-  <Pages.Main/>
+  <AppRouter />
 );
 
 export default App;

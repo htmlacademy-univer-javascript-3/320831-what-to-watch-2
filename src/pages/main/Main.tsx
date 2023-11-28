@@ -1,6 +1,7 @@
 import Catalog from '../../componants/catalog';
 import FilmCard from '../../componants/film-card';
 import Footer from '../../componants/footer';
+import { smallCardList } from '../../data/constants/smallCardList';
 
 const Main: React.FC = () => (
   <>
@@ -15,8 +16,7 @@ const Main: React.FC = () => (
     />
 
     <div className="page-content">
-      <Catalog/>
-      { /* Вынести в страницу компонент роутинга, отображать во всех разделах */}
+      <Catalog isNeededGenres cardList={smallCardList}/>
       <Footer/>
     </div>
   </>
