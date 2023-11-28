@@ -1,6 +1,6 @@
 # Личный проект «Что посмотреть»
 
-* Студент: [Ксения Мелихова](https://up.htmlacademy.ru/univer-js3/2/user/2426563).
+* Студент: [Дмитрий Торопов](https://up.htmlacademy.ru/univer-js3/2/user/320831).
 * Наставник: [Глеб Клецков](https://github.com/KletskovG).
 
 ---
