@@ -1,6 +1,6 @@
+import React from 'react';
 import Footer from '../../components/footer';
 import { LikeThisPropsType } from './film.types';
-import React from 'react';
 import LOCALE from './film.locale';
 import { films } from '../../mocks/films';
 import FilmList from '../../components/film-list';

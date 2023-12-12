@@ -1,5 +1,5 @@
-import { IFilm } from '../../data/abstractions';
+import { IFilmData } from '../../data/abstractions/IFilmData';
 
 export type FilmCardProps = {
-	film: IFilm;
+	film: IFilmData;
 }

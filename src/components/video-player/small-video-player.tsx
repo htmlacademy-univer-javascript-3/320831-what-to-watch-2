@@ -1,8 +1,10 @@
 import React, { useRef } from 'react';
 import useSmallVideoPlayer from './useSmallVideoPlayer';
-import { IFilm } from '../../data/abstractions';
+import { IFilmData } from '../../data/abstractions/IFilmData';
 
-const SmallVideoPlayer: React.FC<IFilm & { isMuted?: boolean }> = ({ videoUrl, thumbnailUrl, title, isMuted = true }) => {
+const SmallVideoPlayer: React.FC<IFilmData & { isMuted?: boolean }> = ({
+  name, previewImage, previewVideoLink, isMuted = true
+}) => {
   const videoRef = useRef(null);
   const { handleMouseEnter, handleMouseLeave, isHovered } = useSmallVideoPlayer(videoRef);
   return (
@@ -14,8 +16,8 @@ const SmallVideoPlayer: React.FC<IFilm & { isMuted?: boolean }> = ({ videoUrl, t
       {isHovered ? (
         <video
           ref={videoRef}
-          src={videoUrl}
-          poster={thumbnailUrl}
+          src={previewVideoLink}
+          poster={previewImage}
           muted={isMuted}
           width="280"
           height="175"
@@ -23,8 +25,8 @@ const SmallVideoPlayer: React.FC<IFilm & { isMuted?: boolean }> = ({ videoUrl, t
         />
       ) : (
         <img
-          src={thumbnailUrl}
-          alt={title}
+          src={previewImage}
+          alt={name}
           width="280"
           height="175"
         />

@@ -1,14 +1,33 @@
 import Catalog from '../data/enums/catalog';
 import { films } from '../mocks/films';
 import { createReducer } from '@reduxjs/toolkit';
-import { setGenre, getFilmsByGenre, moreFilms, resetFilmCount } from './action';
+import { setGenre, getFilmsByGenre, moreFilms, resetFilmCount, loadFilms, setFilmsDataLoadingStatus, requireAuthorization, loadPromo } from './action';
 import { FILM_STEP } from '../data/constants/film-step';
+import { IFilmData } from '../data/abstractions/IFilmData';
+import { AuthorizationStatus } from '../data/enums/authorization-status';
+import { IFilmPromo } from '../data/abstractions/IFilmPromo';
+import dictionatyGenre from '../utils/dictionary-genre';
 
-const initialState = {
+type InitialState = {
+  authorizationStatus: AuthorizationStatus;
+  genre: Catalog;
+  films: IFilmData[];
+  promo: IFilmPromo | null;
+  allFilms: IFilmData[];
+  filmCount: number;
+  allFilmCount: number;
+  isFilmsDataLoading: boolean;
+}
+
+const initialState: InitialState = {
+  authorizationStatus: AuthorizationStatus.Unknown,
   genre: Catalog.All,
-  films,
+  films: [],
+  allFilms: [],
+  promo: null,
   filmCount: FILM_STEP,
-  allFilmCount: films.length
+  allFilmCount: films.length,
+  isFilmsDataLoading: false
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -18,16 +37,30 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(getFilmsByGenre, (state) => {
       if(state.genre === Catalog.All) {
-        state.films = films.slice(0, state.filmCount);
-        state.allFilmCount = films.length;
+        state.films = state.allFilms.slice(0, state.filmCount);
+        state.allFilmCount = state.films.length;
       } else {
-        state.films = films.filter((f)=>f.genre === state.genre).slice(0, state.filmCount);
-        state.allFilmCount = films.filter((f)=>f.genre === state.genre).length;
+        state.films = state.allFilms.filter((f)=> dictionatyGenre[state.genre].includes(f.genre)).slice(0, state.filmCount);
+        state.allFilmCount = state.allFilms.filter((f)=>f.genre === state.genre).length;
       }
-    }).addCase(moreFilms, (state) => {
+    })
+    .addCase(moreFilms, (state) => {
       state.filmCount = state.filmCount + FILM_STEP;
-    }).addCase(resetFilmCount, (state) =>{
+    })
+    .addCase(resetFilmCount, (state) =>{
       state.filmCount = FILM_STEP;
+    })
+    .addCase(loadFilms, (state, action) =>{
+      state.allFilms = action.payload;
+    })
+    .addCase(setFilmsDataLoadingStatus, (state, action) => {
+      state.isFilmsDataLoading = action.payload;
+    })
+    .addCase(requireAuthorization, (state, action) => {
+      state.authorizationStatus = action.payload;
+    })
+    .addCase(loadPromo, (state, action) => {
+      state.promo = action.payload;
     });
 });
 
