@@ -1,22 +1,33 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import GENRES from '../../data/constants/genres';
-import SmallFilmCard from '../small-film-card';
 import LOCALE from './catalog.locale';
 import GenresItem from './genres-item';
-import { CatalogProps } from './catalog.types';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import { getFilmsByGenre, setGenre } from '../../store/action';
+import { getFilmsByGenre, moreFilms, resetFilmCount, setGenre } from '../../store/action';
 import Catalog from '../../data/enums/catalog';
+import Buttons from '../buttons';
+import FilmList from '../film-list';
 
-const FilmCatalog: React.FC<CatalogProps> = ({ isNeededGenres }) => {
+const FilmCatalog: React.FC = () => {
   const genre = useAppSelector((state) => state.genre);
   const filmList = useAppSelector((state) => state.films);
+  const allFilmCount = useAppSelector((state) => state.allFilmCount);
+  const filmCount = useAppSelector((state) => state.filmCount);
   const dispatch = useAppDispatch();
 
   const handleSetGenre = (newGenre: Catalog) => {
     dispatch(setGenre({ genre: newGenre }));
+  };
+
+  const handleShowMore = () => {
+    dispatch(moreFilms());
     dispatch(getFilmsByGenre());
   };
+
+  useEffect(() => {
+    dispatch(resetFilmCount());
+    dispatch(getFilmsByGenre());
+  }, [genre, dispatch]);
 
   return (
     <section className="catalog">
@@ -24,32 +35,23 @@ const FilmCatalog: React.FC<CatalogProps> = ({ isNeededGenres }) => {
         {LOCALE.TITLE}
       </h2>
 
-      {isNeededGenres ?
-        <ul className="catalog__genres-list">
-          {GENRES.map((catalog) => (
-            <GenresItem
-              handleSetGenre={handleSetGenre}
-              isActive={catalog.title === genre}
-              catalog={catalog}
-              key={catalog.title}
-            />
-          ))}
-        </ul>
+      <ul className="catalog__genres-list">
+        {GENRES.map((catalog) => (
+          <GenresItem
+            handleSetGenre={handleSetGenre}
+            isActive={catalog.title === genre}
+            catalog={catalog}
+            key={catalog.title}
+          />
+        ))}
+      </ul>
+
+      <FilmList filmList={filmList} />
+
+      {allFilmCount >= filmCount ?
+        <Buttons.ShowMore handleClick={handleShowMore} />
         : null}
 
-      <div className="catalog__films-list">
-        {filmList.map((film) =>
-          <SmallFilmCard {...film} key={film.id} />
-        )}
-      </div>
-
-      {filmList.length >= 20 ?
-        <div className="catalog__more">
-          <button className="catalog__button" type="button">
-            {LOCALE.BUTTON}
-          </button>
-        </div>
-        : null}
     </section>
   );
 };
