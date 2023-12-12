@@ -3,40 +3,46 @@ import LOCALE from './film-card.locale';
 import Logo from '../logo/logo';
 import UserBlock from '../user-block/user-block';
 import Buttons from './buttons';
-import { FilmCardProps } from './film-card.types';
+import { useAppSelector } from '../../hooks/hooks';
+import LoadingSreen from '../../pages/loading-sreen';
 
-const FilmCard: React.FC<FilmCardProps> = ({ film }) => (
-  <section className="film-card">
-    <div className="film-card__bg">
-      <img src={film.thumbnailUrl} alt={film.title} />
-    </div>
+const FilmCard: React.FC = () => {
+  const promo = useAppSelector((state) => state.promo);
+  if (promo === null) {
+    return <LoadingSreen />;
+  }
+  return (
+    <section className="film-card">
+      <div className="film-card__bg">
+        <img src={promo.backgroundImage} alt={promo.name} />
+      </div>
 
-    <h1 className="visually-hidden">{LOCALE.TITLE}</h1>
+      <h1 className="visually-hidden">{LOCALE.TITLE}</h1>
 
-    <header className="page-header film-card__head">
-      <Logo />
-      <UserBlock />
-    </header>
+      <header className="page-header film-card__head">
+        <Logo />
+        <UserBlock />
+      </header>
 
-    <div className="film-card__wrap">
-      <div className="film-card__info">
-        <div className="film-card__poster">
-          <img src={film.thumbnailUrl} alt={film.title} width="218" height="327" />
-        </div>
+      <div className="film-card__wrap">
+        <div className="film-card__info">
+          <div className="film-card__poster">
+            <img src={promo.posterImage} alt={promo.name} width="218" height="327" />
+          </div>
 
-        <div className="film-card__desc">
-          <h2 className="film-card__title">{film.title}</h2>
-          <p className="film-card__meta">
-            <span className="film-card__genre">{film.genre}</span>
-            <span className="film-card__year">{film.uploadTime}</span>
-          </p>
+          <div className="film-card__desc">
+            <h2 className="film-card__title">{promo.name}</h2>
+            <p className="film-card__meta">
+              <span className="film-card__genre">{promo.genre}</span>
+              <span className="film-card__year">{promo.released}</span>
+            </p>
 
-          <Buttons id={film.id} />
+            <Buttons id={promo.id} />
+          </div>
         </div>
       </div>
-    </div>
-  </section>
-
-);
+    </section>
+  );
+};
 
 export default FilmCard;

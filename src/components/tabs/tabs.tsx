@@ -1,35 +1,33 @@
-/* eslint-disable indent */
 import React, { Fragment, useState } from 'react';
+import { ItemType, TabProps, TabsProps } from './tabs.types';
 
-type ItemType = {
-  label: string;
-  option: string;
-}
-type TabPropsType = { children: React.ReactElement }
+export const Tab: React.FC<TabProps> = ({ children }) => (<Fragment key={children.key}>{children}</Fragment>);
 
-type TabsPropsType = {
-  items: ItemType[];
-  defaultActiveKey?: string;
-  children?: React.ReactElement[];
-}
-
-export const Tab: React.FC<TabPropsType> = ({ children }) => (<Fragment key={children.key}>{children}</Fragment>);
-
-const Item: React.FC<ItemType & { activeKey: string; onClick: (key: string) => void }> = ({ label, option, activeKey, onClick }) => (
+const Item: React.FC<ItemType & { activeKey: string; onClick: (key: string) => void }> = ({
+  label,
+  option,
+  activeKey,
+  onClick
+}) => (
   <li className={`film-nav__item ${activeKey === option ? 'film-nav__item--active' : ''}`}>
-    <div className="film-nav__link" key={option} onClick={() => {
-      onClick(option);
-    }}
-    >{label}
+    <div
+      className="film-nav__link"
+      key={option}
+      onClick={() => {
+        onClick(option);
+      }}
+    >
+      {label}
     </div>
   </li>
 );
 
-const Tabs: React.FunctionComponent<TabsPropsType> = ({ items, defaultActiveKey, children }) => {
+const Tabs: React.FunctionComponent<TabsProps> = ({
+  items, defaultActiveKey, children
+}) => {
   const [activeKey, setTabActiveKey] = useState<string>(defaultActiveKey ?? items[0].option);
-  const handleClick = (key: string) => {
-    setTabActiveKey(key);
-  };
+  const handleClick = (key: string) => setTabActiveKey(key);
+
   return (
     <div className="film-card__desc">
       <nav className="film-nav film-card__nav">
@@ -41,4 +39,5 @@ const Tabs: React.FunctionComponent<TabsPropsType> = ({ items, defaultActiveKey,
     </div>
   );
 };
+
 export default Tabs;
