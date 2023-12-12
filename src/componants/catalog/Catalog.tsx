@@ -20,8 +20,8 @@ const Catalog: React.FC<CatalogProps> = ({ isNeededGenres, filmList }) => (
       : null}
 
     <div className="catalog__films-list">
-      {filmList.map((card) =>
-        <SmallFilmCard {...card} key={card.title} />
+		{filmList.map((film) =>
+        	<SmallFilmCard {...film} key={film.id} />
       )}
     </div>
 

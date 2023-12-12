@@ -1,3 +1,5 @@
+import { IReview } from './IReview';
+
 export interface IFilm {
 	id: string;
 	title: string;
@@ -11,4 +13,9 @@ export interface IFilm {
 	subscriber: string;
 	isLive: boolean;
 	genre: string;
+	starrings: string[];
+    ratingScore: number;
+    ratingCount: number;
+    reviews: IReview[];
+    likeThis: string[];
 }
