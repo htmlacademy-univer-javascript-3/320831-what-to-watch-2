@@ -1,3 +1,4 @@
+import Catalog from '../enums/catalog';
 import { IReview } from './IReview';
 
 export interface IFilm {
@@ -12,10 +13,10 @@ export interface IFilm {
 	description: string;
 	subscriber: string;
 	isLive: boolean;
-	genre: string;
+	genre: Catalog;
 	starrings: string[];
-    ratingScore: number;
-    ratingCount: number;
-    reviews: IReview[];
-    likeThis: string[];
+  ratingScore: number;
+  ratingCount: number;
+  reviews: IReview[];
+  likeThis: string[];
 }

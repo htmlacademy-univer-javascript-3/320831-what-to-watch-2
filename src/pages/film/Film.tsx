@@ -1,15 +1,15 @@
 import React from 'react';
-import Logo from '../../componants/logo';
-import UserBlock from '../../componants/user-block/user-block';
+import Logo from '../../components/logo';
+import UserBlock from '../../components/user-block/user-block';
 import Page404 from '../page404';
 import { films } from '../../mocks/films';
 import { useParams } from 'react-router-dom';
-import Buttons from '../../componants/buttons';
-import Tabs, { Tab } from '../../componants/tabs/tabs';
+import Buttons from '../../components/buttons';
+import Tabs, { Tab } from '../../components/tabs/tabs';
 import Overview from './overview';
 import Details from './details';
 import Reviews from './reviews';
-import LikeThis from './like_this';
+import LikeThis from './like-this';
 import { FILM_TABS } from '../../data/constants/filmTab';
 import LOCALE from './film.locale';
 
@@ -68,19 +68,18 @@ const Film: React.FC = () => {
                 height="327"
               />
             </div>
-
             <div className="film-card__desc">
-				<Tabs defaultActiveKey='1' items={FILM_TABS}>
-                	<Tab key='1'>
-                  	<Overview {...film} />
-                	</Tab>
-                	<Tab key='2'>
-                  	<Details {...film} />
-                	</Tab>
-                	<Tab key='3'>
-                  	<Reviews {...film} />
-                	</Tab>
-              	</Tabs>
+              <Tabs defaultActiveKey='1' items={FILM_TABS}>
+                <Tab key='1'>
+                  <Overview {...film} />
+                </Tab>
+                <Tab key='2'>
+                  <Details {...film} />
+                </Tab>
+                <Tab key='3'>
+                  <Reviews {...film} />
+                </Tab>
+              </Tabs>
             </div>
           </div>
         </div>

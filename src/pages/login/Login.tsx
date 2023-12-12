@@ -1,6 +1,6 @@
 import React from 'react';
-import Footer from '../../componants/footer/footer';
-import Logo from '../../componants/logo';
+import Footer from '../../components/footer/footer';
+import Logo from '../../components/logo';
 import LOCALE from './login.locale';
 
 const isError = false;
@@ -64,7 +64,7 @@ const Login: React.FC = () => (
       </form>
     </div>
 
-    <Footer/>
+    <Footer />
   </div>
 );
 

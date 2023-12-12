@@ -20,6 +20,7 @@ const Details: React.FC<IFilm> = ({ author, starrings, duration, genre, uploadTi
         </span>
       </p>
     </div>
+
     <div className="film-card__text-col">
       <p className="film-card__details-item">
         <strong className="film-card__details-name">{LOCALE.RUN_TIME}</strong>

@@ -9,7 +9,7 @@ const Review: React.FC<IReview> = ({ review, author, date, rating }) => (
       <p className="review__text">{review}</p>
       <footer className="review__details">
         <cite className="review__author">{author}</cite>
-        {/* TODO Исправить даты */}
+        {/* Исправить даты */}
         <time className="review__date" dateTime="2016-12-24">{date}</time>
       </footer>
     </blockquote>
