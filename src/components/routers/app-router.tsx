@@ -6,7 +6,7 @@ import {
 import Pages from '../../pages';
 import PrivateRoute from './private-router';
 import { AppRoute } from '../../data/enums/app-route';
-import HistoryRouter from './history-route';
+import HistoryRouter from './history-router';
 import browserHistory from '../../utils/browser-history';
 import { useAppSelector } from '../../hooks/hooks';
 import { AuthorizationStatus } from '../../data/enums/authorization-status';

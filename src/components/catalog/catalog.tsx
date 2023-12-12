@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import GENRES from '../../data/constants/genres';
 import LOCALE from './catalog.locale';
 import GenresItem from './genres-item';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
@@ -7,6 +6,7 @@ import { getFilmsByGenre, moreFilms, resetFilmCount, setGenre } from '../../stor
 import Catalog from '../../data/enums/catalog';
 import Buttons from '../buttons';
 import FilmList from '../film-list';
+import GENRES from '../../data/constants/genres';
 
 const FilmCatalog: React.FC = () => {
   const genre = useAppSelector((state) => state.genre);
@@ -40,7 +40,7 @@ const FilmCatalog: React.FC = () => {
           <GenresItem
             handleSetGenre={handleSetGenre}
             isActive={catalog.title === genre}
-            catalog={catalog}
+            title={catalog.title}
             key={catalog.title}
           />
         ))}

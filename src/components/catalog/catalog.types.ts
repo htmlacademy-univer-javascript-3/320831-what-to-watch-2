@@ -1,6 +1,5 @@
 import { IFilm } from '../../data/abstractions';
 import Catalog from '../../data/enums/catalog';
-import { CatalogType } from '../../types';
 
 export type CatalogProps = {
 	isNeededGenres?: boolean;
@@ -8,7 +7,7 @@ export type CatalogProps = {
 };
 
 export type GenresItemProps = {
-  catalog: CatalogType;
+  title: Catalog;
   handleSetGenre: (newGenre: Catalog) => void;
   isActive: boolean;
 }

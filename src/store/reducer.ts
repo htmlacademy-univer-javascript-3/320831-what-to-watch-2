@@ -1,22 +1,42 @@
 import Catalog from '../data/enums/catalog';
-import { films } from '../mocks/films';
 import { createReducer } from '@reduxjs/toolkit';
-import { setGenre, getFilmsByGenre, moreFilms, resetFilmCount, loadFilms, setFilmsDataLoadingStatus, requireAuthorization, loadPromo } from './action';
+import {
+  setGenre,
+  getFilmsByGenre,
+  moreFilms,
+  resetFilmCount,
+  loadFilms,
+  setFilmsDataLoadingStatus,
+  requireAuthorization,
+  loadPromo,
+  loadFilm,
+  setFilmDataLoadingStatus,
+  resetFilm,
+  loadSimilarFilms,
+  loadReviewsFilm
+} from './action';
 import { FILM_STEP } from '../data/constants/film-step';
 import { IFilmData } from '../data/abstractions/IFilmData';
 import { AuthorizationStatus } from '../data/enums/authorization-status';
 import { IFilmPromo } from '../data/abstractions/IFilmPromo';
-import dictionatyGenre from '../utils/dictionary-genre';
+
+import { IFilmAllInfo } from '../data/abstractions/IFilmAllInfo';
+import { IReview } from '../data/abstractions/IReview';
+import genreDictionary from '../utils/genre-dictionary';
 
 type InitialState = {
   authorizationStatus: AuthorizationStatus;
   genre: Catalog;
   films: IFilmData[];
   promo: IFilmPromo | null;
+  film: IFilmAllInfo | null;
   allFilms: IFilmData[];
+  similarFilms: IFilmData[];
+  reviewsFilm: IReview[];
   filmCount: number;
   allFilmCount: number;
   isFilmsDataLoading: boolean;
+  isFilmDataLoading: boolean;
 }
 
 const initialState: InitialState = {
@@ -24,10 +44,14 @@ const initialState: InitialState = {
   genre: Catalog.All,
   films: [],
   allFilms: [],
+  film: null,
+  similarFilms: [],
+  reviewsFilm: [],
   promo: null,
   filmCount: FILM_STEP,
-  allFilmCount: films.length,
-  isFilmsDataLoading: false
+  allFilmCount: 0,
+  isFilmsDataLoading: false,
+  isFilmDataLoading: false
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -40,7 +64,7 @@ const reducer = createReducer(initialState, (builder) => {
         state.films = state.allFilms.slice(0, state.filmCount);
         state.allFilmCount = state.films.length;
       } else {
-        state.films = state.allFilms.filter((f)=> dictionatyGenre[state.genre].includes(f.genre)).slice(0, state.filmCount);
+        state.films = state.allFilms.filter((f)=> genreDictionary[state.genre].includes(f.genre)).slice(0, state.filmCount);
         state.allFilmCount = state.allFilms.filter((f)=>f.genre === state.genre).length;
       }
     })
@@ -61,6 +85,24 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(loadPromo, (state, action) => {
       state.promo = action.payload;
+    })
+    .addCase(loadFilm, (state, action) => {
+      state.film = action.payload;
+    })
+    .addCase(loadSimilarFilms, (state, action) => {
+      state.similarFilms = action.payload;
+    })
+    .addCase(loadReviewsFilm, (state, action) => {
+      state.reviewsFilm = action.payload;
+    })
+    .addCase(setFilmDataLoadingStatus, (state, action) => {
+      state.isFilmDataLoading = action.payload;
+    })
+    .addCase(resetFilm, (state) => {
+      state.film = null;
+      state.similarFilms = [];
+      state.reviewsFilm = [];
+      state.isFilmDataLoading = false;
     });
 });
 

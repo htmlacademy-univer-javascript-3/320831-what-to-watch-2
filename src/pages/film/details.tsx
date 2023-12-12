@@ -1,20 +1,21 @@
 import React from 'react';
-import { IFilm } from '../../data/abstractions';
 import LOCALE from './film.locale';
+import { IFilmAllInfo } from '../../data/abstractions/IFilmAllInfo';
+import { convertTimeToString } from '../../utils/convert-time-to-string';
 
-const Details: React.FC<IFilm> = ({ author, starrings, duration, genre, uploadTime }) => (
+const Details: React.FC<IFilmAllInfo> = ({ director, starring, runTime, genre, released }) => (
   <div className="film-card__text film-card__row">
     <div className="film-card__text-col">
       <p className="film-card__details-item">
         <strong className="film-card__details-name">{LOCALE.Director}</strong>
-        <span className="film-card__details-value">{author}</span>
+        <span className="film-card__details-value">{director}</span>
       </p>
       <p className="film-card__details-item">
         <strong className="film-card__details-name">{LOCALE.Starring}</strong>
         <span className="film-card__details-value">
-          {starrings.map((starring, index) => (
+          {starring.map((star, index) => (
             <>
-              {`${starring}${index !== length - 1 ? ',' : ''}`}{index !== length - 1 ? <br /> : null}
+              {`${star}${index !== starring.length - 1 ? ',' : ''}`}{index !== starring.length - 1 ? <br /> : null}
             </>
           ))}
         </span>
@@ -24,7 +25,7 @@ const Details: React.FC<IFilm> = ({ author, starrings, duration, genre, uploadTi
     <div className="film-card__text-col">
       <p className="film-card__details-item">
         <strong className="film-card__details-name">{LOCALE.RUN_TIME}</strong>
-        <span className="film-card__details-value">{duration}</span>
+        <span className="film-card__details-value">{convertTimeToString(runTime)}</span>
       </p>
       <p className="film-card__details-item">
         <strong className="film-card__details-name">{LOCALE.Genre}</strong>
@@ -32,7 +33,7 @@ const Details: React.FC<IFilm> = ({ author, starrings, duration, genre, uploadTi
       </p>
       <p className="film-card__details-item">
         <strong className="film-card__details-name">{LOCALE.Released}</strong>
-        <span className="film-card__details-value">{uploadTime}</span>
+        <span className="film-card__details-value">{released}</span>
       </p>
     </div>
   </div>

@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { IFilm } from '../../data/abstractions';
 import LOCALE from './add-rewiew.locale';
+import { IFilmAllInfo } from '../../data/abstractions/IFilmAllInfo';
 
 type BreadcrumbsProps = {
-	film: IFilm;
+  film: IFilmAllInfo;
 };
 
 const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ film }) => (
@@ -12,7 +12,7 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ film }) => (
     <ul className="breadcrumbs__list">
       <li className="breadcrumbs__item">
         <Link to={`/films/${film.id}`} className="breadcrumbs__link">
-          {film.title}
+          {film.name}
         </Link>
       </li>
       <li className="breadcrumbs__item">
