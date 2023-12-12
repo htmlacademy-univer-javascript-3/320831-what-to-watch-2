@@ -1,5 +1,5 @@
-import { CatalogType } from '../../types';
 import Catalog from '../enums/catalog';
+import { CatalogType } from '../types/catalog-type';
 
 const GENRES: CatalogType[] = [
   {

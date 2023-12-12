@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import Logo from '../../components/logo';
 import Page404 from '../page404';
-import { films } from '../../mocks/films';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Breadcrumbs from './breadcrumbs';
 import UserBlock from '../../components/user-block';
 import RatingInput from '../../components/input/rating-stars';
 import LOCALE from './add-rewiew.locale';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { resetFilm } from '../../store/action';
+import { addReview, fetchFilm } from '../../store/api-action';
+import LoadingSreen from '../loading-sreen';
 
 const initFormValue = {
   rating: null,
@@ -18,10 +21,25 @@ type FormValueType = {
   text: string;
 };
 
+const MAX_LEN_REVIEW = 400;
+const MIN_LEN_REVIEW = 50;
+
 const AddReview: React.FC = () => {
   const params = useParams();
-  const film = films.find((f) => f.id === params.id);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const film = useAppSelector((state) => state.film);
+  const isFilmDataLoading = useAppSelector((state) => state.isFilmDataLoading);
   const [formValue, setFormValue] = useState<FormValueType>(initFormValue);
+
+  useLayoutEffect(() => {
+    if (params.id) {
+      dispatch(fetchFilm({ filmId: params.id }));
+    }
+    return () => {
+      dispatch(resetFilm());
+    };
+  }, [params.id, dispatch]);
 
   const onClickRating = (event?: React.ChangeEvent<HTMLInputElement>) => {
     const rating = event?.target.value ? Number(event?.target.value) : null;
@@ -34,17 +52,32 @@ const AddReview: React.FC = () => {
 
   const onPost = (event?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event?.preventDefault();
+    if (film?.id === undefined || formValue.rating === null || formValue.text.length < MIN_LEN_REVIEW || formValue.text.length > MAX_LEN_REVIEW) {
+      return;
+    }
+    dispatch(
+      addReview({ filmId: film.id, rating: formValue.rating, comment: formValue.text })
+    ).then(() => {
+      navigate(`/films/${film.id}`);
+    });
     setFormValue(initFormValue);
   };
 
-  if (film === undefined) {
+  const isDisabled = formValue.rating === null || formValue.text.length < MIN_LEN_REVIEW || formValue.text.length > MAX_LEN_REVIEW;
+
+  if (isFilmDataLoading) {
+    return <LoadingSreen />;
+  }
+
+  if (film === null) {
     return <Page404 />;
   }
+
   return (
-    <section className="film-card film-card--full">
+    <section className="film-card film-card--full" style={{ background: film.backgroundColor }}>
       <div className="film-card__header">
         <div className="film-card__bg">
-          <img src={film.thumbnailUrl} alt={film.title} />
+          <img src={film.backgroundImage} alt={film.name} />
         </div>
 
         <h1 className="visually-hidden">WTW</h1>
@@ -57,8 +90,8 @@ const AddReview: React.FC = () => {
 
         <div className="film-card__poster film-card__poster--small">
           <img
-            src={film.thumbnailUrl}
-            alt={film.title}
+            src={film.posterImage}
+            alt={film.name}
             width="218"
             height="327"
           />
@@ -88,6 +121,7 @@ const AddReview: React.FC = () => {
                 className="add-review__btn"
                 type="submit"
                 onClick={onPost}
+                disabled={isDisabled}
               >
                 {LOCALE.POST}
               </button>

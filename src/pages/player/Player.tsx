@@ -1,21 +1,22 @@
 import React from 'react';
-import { Link, useParams } from 'react-router-dom';
-import { films } from '../../mocks/films';
+import { Link } from 'react-router-dom';
 import Page404 from '../page404';
 import LOCALE from './player.locale';
+import { useAppSelector } from '../../hooks/hooks';
 
 const Player: React.FC = () => {
-  const params = useParams();
-  const film = films.find((f) => f.id === params.id);
-  if (film === undefined) {
+  // const params = useParams();
+  //потом поменять
+  const film = useAppSelector((state) => state.film);
+  if (film === undefined || film === null) {
     return <Page404 />;
   }
   return (
     <div className="player">
       <video
-        src={film.videoUrl}
+        src={film?.videoLink}
         className="player__video"
-        poster={film.thumbnailUrl}
+        poster={film?.posterImage}
       />
       <Link type='button' className="player__exit" to={`/films/${film.id}`}>
         {LOCALE.EXIT}
@@ -29,7 +30,7 @@ const Player: React.FC = () => {
             </div>
           </div>
           <div className="player__time-value">
-            {film.duration}
+            {film.runTime}
           </div>
         </div>
 

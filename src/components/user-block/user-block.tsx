@@ -20,9 +20,7 @@ const UserBlock: React.FC = () => {
         </Link>
       </li>
       <li className="user-block__item">
-
-        <Link
-          to='/login'
+        <div
           className="user-block__link"
           onClick={(evt) => {
             evt.preventDefault();
@@ -30,18 +28,20 @@ const UserBlock: React.FC = () => {
           }}
         >
           {LOCALE.OUT}
-        </Link>
-
+        </div>
       </li>
-    </ul> :
-    <div className="user-block">
-      <Link
-        to='/login'
-        className="user-block__link"
-      >
-        Sign in
-      </Link>
-    </div>;
+    </ul>
+    :
+    <ul className="user-block">
+      <li className="user-block__item">
+        <Link
+          to='/login'
+          className="user-block__link"
+        >
+          Sign in
+        </Link>
+      </li>
+    </ul>;
 };
 
 export default UserBlock;

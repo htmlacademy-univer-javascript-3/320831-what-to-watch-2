@@ -1,10 +1,11 @@
-import { IFilmData } from './IFilmData';
-
-export interface IFilmAllInfo extends IFilmData {
+export interface IFilmAllInfo {
+  id: string;
+  name: string;
+  genre: string;
   backgroundImage: string;
   backgroundColor: string;
   videoLink: string;
-  previewVideoLink: string;
+  posterImage: string;
   description: string;
   rating: number;
   scoresCount: number;

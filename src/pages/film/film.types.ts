@@ -1,4 +1,14 @@
+import { IFilmData } from '../../data/abstractions/IFilmData';
 
 export type LikeThisPropsType = {
-  filmsId: string[];
+  similarFilms: IFilmData[];
+  backgroundColor?: string;
+}
+
+export type OverviewProps = {
+  description: string;
+  director: string;
+  rating: number;
+  scoresCount: number;
+  starring: string[];
 }
