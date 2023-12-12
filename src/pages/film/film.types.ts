@@ -1,3 +1,4 @@
+
 export type LikeThisPropsType = {
-	filmsId: string[];
-  }
+  filmsId: string[];
+}

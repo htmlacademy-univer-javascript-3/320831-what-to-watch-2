@@ -1,6 +1,6 @@
-import Catalog from '../../componants/catalog';
-import FilmCard from '../../componants/film-card';
-import Footer from '../../componants/footer';
+import Catalog from '../../components/catalog';
+import FilmCard from '../../components/film-card';
+import Footer from '../../components/footer';
 import { films } from '../../mocks/films';
 
 const Main: React.FC = () => (

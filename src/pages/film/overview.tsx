@@ -1,7 +1,7 @@
 import React from 'react';
 import { IFilm } from '../../data/abstractions';
-import { ratingText } from '../../utils/rating_text';
-import { starringText } from '../../utils/starring_text';
+import { ratingText } from '../../utils/rating-text';
+import { starringText } from '../../utils/starring-text';
 import LOCALE from './film.locale';
 
 const Overview: React.FC<IFilm> = ({ description, author, ratingCount, ratingScore, starrings }) => (
