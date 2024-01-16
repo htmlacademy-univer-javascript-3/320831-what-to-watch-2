@@ -1,43 +1,49 @@
-import React from 'react';
-import LOCALE from './film-card.locale';
-import Logo from '../logo/logo';
-import UserBlock from '../user-block/user-block';
-import Buttons from './buttons';
-import { useAppSelector } from '../../hooks/hooks';
-import LoadingSreen from '../../pages/loading-sreen';
+import { Link } from 'react-router-dom';
+import { Buttons } from '../buttons/buttons.ts';
+import UserBlock from '../user-block/user-block.tsx';
+import { FC, memo } from 'react';
+import { Film } from '../../types/film.ts';
+import { useAppSelector } from '../../hooks/store.ts';
+import { authorizationStatusData } from '../../store/auth/auth-selectors.ts';
 
-const FilmCard: React.FC = () => {
-  const promo = useAppSelector((state) => state.promo);
-  if (promo === null) {
-    return <LoadingSreen />;
-  }
+interface IFilmCardProps {
+  film: Film;
+}
+const FilmCard: FC<IFilmCardProps> = ({ film }) => {
+  const { backgroundImage, name, genre, id, posterImage, released } = film;
+  const isAuth = useAppSelector(authorizationStatusData);
   return (
-    <section className="film-card">
+    <section className="film-card" data-testid="card-link">
       <div className="film-card__bg">
-        <img src={promo.backgroundImage} alt={promo.name} />
+        <img src={backgroundImage} alt={name} />
       </div>
-
-      <h1 className="visually-hidden">{LOCALE.TITLE}</h1>
-
+      <h1 className="visually-hidden">WTW</h1>
       <header className="page-header film-card__head">
-        <Logo />
+        <div className="logo">
+          <Link className="logo__link logo__link--light" to="/">
+            <span className="logo__letter logo__letter--1">W</span>
+            <span className="logo__letter logo__letter--2">T</span>
+            <span className="logo__letter logo__letter--3">W</span>
+          </Link>
+        </div>
         <UserBlock />
       </header>
-
       <div className="film-card__wrap">
         <div className="film-card__info">
           <div className="film-card__poster">
-            <img src={promo.posterImage} alt={promo.name} width="218" height="327" />
+            <img src={posterImage} alt={name} width="218" height="327" />
           </div>
-
           <div className="film-card__desc">
-            <h2 className="film-card__title">{promo.name}</h2>
+            <h2 className="film-card__title">{name}</h2>
             <p className="film-card__meta">
-              <span className="film-card__genre">{promo.genre}</span>
-              <span className="film-card__year">{promo.released}</span>
+              <span className="film-card__genre">{genre}</span>
+              <span className="film-card__year">{released}</span>
             </p>
-
-            <Buttons id={promo.id} />
+            <div className="film-card__buttons">
+              <Buttons.Play filmId={id}/>
+              <Buttons.MyListButton film={film} />
+              {isAuth && <Buttons.AddReview filmId={id}/>}
+            </div>
           </div>
         </div>
       </div>
@@ -45,4 +51,4 @@ const FilmCard: React.FC = () => {
   );
 };
 
-export default FilmCard;
+export const FilmCardMemo = memo(FilmCard);
