@@ -1,21 +1,24 @@
 import React from 'react';
-import { GenresItemProps } from './catalog.types';
 
-const GenresItem: React.FC<GenresItemProps> = ({
-  title, handleSetGenre, isActive
+interface IGenresItemProps {
+  catalog: string;
+  setGenre: (newGenre: string) => () => void;
+  isActive: boolean;
+}
+const GenresItem: React.FC<IGenresItemProps> = ({
+  catalog, setGenre, isActive
 }) => (
   <li
     className={`catalog__genres-item ${isActive ? 'catalog__genres-item--active' : ''}`}
+    key={catalog}
   >
     <div
-      onClick={() => {
-        handleSetGenre(title);
-      }}
+      onClick={setGenre(catalog)}
       className="catalog__genres-link"
     >
-      {title}
+      {catalog}
     </div>
   </li>
 );
 
-export default GenresItem;
+export const GenresItemMemo = React.memo(GenresItem);

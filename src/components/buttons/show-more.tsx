@@ -1,20 +1,17 @@
 import React from 'react';
-import LOCALE from './buttons.locale';
 
-type ShowMoreProps = {
-  handleClick: () => void;
-};
+interface ShowMoreProps {
+  handleOnClick: () => void;
+}
 
-const ShowMore: React.FC<ShowMoreProps> = ({ handleClick }) => (
+export const ShowMore: React.FC<ShowMoreProps> = ({ handleOnClick }) => (
   <div className="catalog__more">
     <button
       className="catalog__button"
       type="button"
-      onClick={handleClick}
+      onClick={handleOnClick}
     >
-      {LOCALE.SHOW_MORE}
+      Show more
     </button>
   </div>
 );
-
-export default ShowMore;
