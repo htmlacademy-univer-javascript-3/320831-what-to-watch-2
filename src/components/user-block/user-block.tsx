@@ -1,47 +1,51 @@
-import React from 'react';
-import LOCALE from './user-block.locale';
-import { Link } from 'react-router-dom';
-import { AppRoute } from '../../data/enums/app-route';
-import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import { logoutAction } from '../../store/api-action';
-import { AuthorizationStatus } from '../../data/enums/authorization-status';
+import React, { useCallback } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../hooks/store.ts';
+import { userStatusData } from '../../store/auth/auth-selectors.ts';
+import { logout } from '../../store/api-actions.ts';
+import './user-block.scss';
 
 const UserBlock: React.FC = () => {
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
   const dispatch = useAppDispatch();
+  const user = useAppSelector(userStatusData);
+  const history = useNavigate();
 
-  return authorizationStatus === AuthorizationStatus.Auth ?
+  const logoutUser = useCallback(() => {
+    dispatch(logout());
+    history('/');
+  }, [dispatch, history]);
+
+  const loginUser = useCallback(() => {
+    history('/login');
+  }, [history]);
+  return (
     <ul className="user-block">
-      <li className="user-block__item">
-        <Link to={AppRoute.MyList}>
-          <div className="user-block__avatar">
-            <img src="img/avatar.jpg" alt="User avatar" width="63" height="63" />
-          </div>
-        </Link>
-      </li>
-      <li className="user-block__item">
-        <div
-          className="user-block__link"
-          onClick={(evt) => {
-            evt.preventDefault();
-            dispatch(logoutAction());
-          }}
-        >
-          {LOCALE.OUT}
-        </div>
-      </li>
+      {
+        user ? (
+          <>
+            <li className="user-block__item">
+              <Link to="/mylist">
+                <div className="user-block__avatar">
+                  {user && <img src={user?.avatarUrl} alt="User avatar" width="63" height="63" />}
+                </div>
+              </Link>
+            </li>
+            <li className="user-block__item">
+              <button onClick={logoutUser} className="user-block__link sign-out">
+                Sign out
+              </button>
+            </li>
+          </>
+        ) : (
+          <li className="user-block__item">
+            <button onClick={loginUser} className="user-block__link sign-out">
+              Sign in
+            </button>
+          </li>
+        )
+      }
     </ul>
-    :
-    <ul className="user-block">
-      <li className="user-block__item">
-        <Link
-          to='/login'
-          className="user-block__link"
-        >
-          Sign in
-        </Link>
-      </li>
-    </ul>;
+  );
 };
 
 export default UserBlock;

@@ -1,43 +1,39 @@
-import React, { Fragment, useState } from 'react';
-import { ItemType, TabProps, TabsProps } from './tabs.types';
+import { FC, useCallback, useState } from 'react';
+import { ITab } from './types.ts';
 
-export const Tab: React.FC<TabProps> = ({ children }) => (<Fragment key={children.key}>{children}</Fragment>);
 
-const Item: React.FC<ItemType & { activeKey: string; onClick: (key: string) => void }> = ({
-  label,
-  option,
-  activeKey,
-  onClick
-}) => (
-  <li className={`film-nav__item ${activeKey === option ? 'film-nav__item--active' : ''}`}>
-    <div
-      className="film-nav__link"
-      key={option}
-      onClick={() => {
-        onClick(option);
-      }}
-    >
-      {label}
-    </div>
-  </li>
-);
+interface ITabsProps {
+  tabs: ITab[];
+}
+export const Tabs: FC<ITabsProps> = ({ tabs }) => {
+  const [activeTab, setActiveTab] = useState(0);
 
-const Tabs: React.FunctionComponent<TabsProps> = ({
-  items, defaultActiveKey, children
-}) => {
-  const [activeKey, setTabActiveKey] = useState<string>(defaultActiveKey ?? items[0].option);
-  const handleClick = (key: string) => setTabActiveKey(key);
+  const handleSetActiveTab = useCallback((index: number) => () => {
+    setActiveTab(index);
+  }, []);
 
   return (
     <div className="film-card__desc">
       <nav className="film-nav film-card__nav">
         <ul className="film-nav__list">
-          {items.map((item) => <Item {...item} key={item.option} activeKey={activeKey} onClick={handleClick} />)}
+          {tabs.map((tab, index) => (
+            <li
+              key={tab.label}
+              className={`film-nav__item ${index === activeTab ? 'film-nav__item--active' : ''}`}
+            >
+              <div
+                className="film-nav__link"
+                onClick={handleSetActiveTab(index)}
+              >
+                {tab.label}
+              </div>
+            </li>
+          ))}
         </ul>
       </nav>
-      {children?.find((child) => child?.key === activeKey) ?? null}
+      <div className="tab-content">
+        {tabs[activeTab].component}
+      </div>
     </div>
   );
 };
-
-export default Tabs;

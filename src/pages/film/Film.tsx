@@ -1,68 +1,81 @@
-import React, { useLayoutEffect } from 'react';
-import Logo from '../../components/logo';
-import UserBlock from '../../components/user-block/user-block';
-import Page404 from '../page404';
+import { FC, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import Buttons from '../../components/buttons';
-import Tabs, { Tab } from '../../components/tabs/tabs';
-import Overview from './overview';
-import Details from './details';
-import Reviews from './reviews';
-import LikeThis from './like-this';
-import { FILM_TABS } from '../../data/constants/film-tab';
-import LOCALE from './film.locale';
-import { fetchFilm, fetchReviewsFilm, fetchSimilarFilm } from '../../store/api-action';
-import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import { resetFilm } from '../../store/action';
-import LoadingSreen from '../loading-sreen';
-import { AuthorizationStatus } from '../../data/enums/authorization-status';
+import Logo from '../../components/logo/logo.tsx';
+import UserBlock from '../../components/user-block/user-block.tsx';
+import { Buttons } from '../../components/buttons/buttons.ts';
+import { Tabs } from '../../components/tabs/tabs.tsx';
+import { ITab } from '../../components/tabs/types.ts';
+import { OverviewMemo } from './overview.tsx';
+import { DetailsMemo } from './details.tsx';
+import { ReviewsMemo } from './reviews.tsx';
+import { LikeThisMemo } from '../../components/like-this/like-this.tsx';
+import { Page404 } from '../page-404/page-404.tsx';
+import { useAppDispatch, useAppSelector } from '../../hooks/store.ts';
+import {
+  selectFilmData, selectFilmError, selectFilmStatus,
+} from '../../store/films/film-selectors.ts';
+import { authorizationStatusData } from '../../store/auth/auth-selectors.ts';
+import { fetchFilm, fetchReviews, fetchSimilar } from '../../store/api-actions.ts';
+import { ApiStatusPendingEnum } from '../../types/api.ts';
+import { Spinner } from '../../components/spinner/spinner.tsx';
 
-const Film: React.FC = () => {
-  const params = useParams();
+
+export const Film: FC = () => {
+  const { id = '' } = useParams();
+
+  const film = useAppSelector(selectFilmData);
+  const filmError = useAppSelector(selectFilmError);
+  const filmStatus = useAppSelector(selectFilmStatus);
+  const isAuth = useAppSelector(authorizationStatusData);
+
   const dispatch = useAppDispatch();
-  const film = useAppSelector((state) => state.film);
-  const reviewsFilm = useAppSelector((state) => state.reviewsFilm);
-  const similarFilms = useAppSelector((state) => state.similarFilms);
-  const isFilmDataLoading = useAppSelector((state) => state.isFilmDataLoading);
-  const isAuth = useAppSelector((state) => state.authorizationStatus === AuthorizationStatus.Auth);
 
-  useLayoutEffect(() => {
-    if (params.id) {
-      dispatch(fetchFilm({ filmId: params.id }));
-      dispatch(fetchSimilarFilm({ filmId: params.id }));
-      dispatch(fetchReviewsFilm({ filmId: params.id }));
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchFilm(id));
+      dispatch(fetchSimilar(id));
+      dispatch(fetchReviews(id));
     }
-    return () => {
-      dispatch(resetFilm());
-    };
-  }, [params.id, dispatch]);
+  }, [id, dispatch]);
 
-  if (isFilmDataLoading) {
-    return <LoadingSreen />;
+
+  const tabs: ITab[] = [
+    {
+      label: 'Overview',
+      component: <OverviewMemo />
+    },
+    {
+      label: 'Details',
+      component: <DetailsMemo />
+    },
+    {
+      label: 'Reviews',
+      component: <ReviewsMemo />
+    }
+  ];
+
+  if (filmStatus === ApiStatusPendingEnum.LOADING) {
+    return <Spinner/>;
   }
 
-  if (film === null) {
-    return <Page404 />;
+  if (!film || filmError) {
+    return <Page404/>;
   }
 
   return (
     <>
-      <section className="film-card film-card--full" style={{ background: film.backgroundColor }}>
+      <section style={{'background': `${film.backgroundColor}`}} className="film-card film-card--full">
         <div className="film-card__hero">
           <div className="film-card__bg">
-            <img
-              src={film.backgroundImage}
-              alt={film.name}
-            />
+            <img src={film.backgroundImage} alt={film.name} />
           </div>
 
-          <h1 className="visually-hidden">{LOCALE.WTW}</h1>
+          <h1 className="visually-hidden">WTW</h1>
 
           <header className="page-header film-card__head">
             <Logo />
             <UserBlock />
           </header>
-
           <div className="film-card__wrap">
             <div className="film-card__desc">
               <h2 className="film-card__title">{film.name}</h2>
@@ -70,15 +83,15 @@ const Film: React.FC = () => {
                 <span className="film-card__genre">
                   {film.genre}
                 </span>
-                <span className="film-card__year">
-                  {film.released}
-                </span>
+                <span className="film-card__year">{film.released}</span>
               </p>
 
               <div className="film-card__buttons">
-                <Buttons.Play id={film.id} />
-                <Buttons.FilmCard count={9} />
-                {isAuth ? <Buttons.AddReview id={film.id} /> : null}
+                <Buttons.Play filmId={id}/>
+                <Buttons.MyListButton film={film} />
+                {
+                  isAuth && <Buttons.AddReview filmId={id}/>
+                }
               </div>
             </div>
           </div>
@@ -95,24 +108,13 @@ const Film: React.FC = () => {
               />
             </div>
             <div className="film-card__desc">
-              <Tabs defaultActiveKey='1' items={FILM_TABS}>
-                <Tab key='1'>
-                  <Overview {...film} />
-                </Tab>
-                <Tab key='2'>
-                  <Details {...film} />
-                </Tab>
-                <Tab key='3'>
-                  <Reviews reviews={reviewsFilm} />
-                </Tab>
-              </Tabs>
+              <Tabs tabs={tabs} />
             </div>
           </div>
         </div>
       </section>
-      {similarFilms.length !== 0 ? <LikeThis similarFilms={similarFilms} backgroundColor={film.backgroundColor} /> : null}
+
+      <LikeThisMemo genre={film.genre}/>
     </>
   );
 };
-
-export default Film;

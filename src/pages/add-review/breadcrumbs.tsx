@@ -1,27 +1,26 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Link } from 'react-router-dom';
-import LOCALE from './add-rewiew.locale';
-import { IFilmAllInfo } from '../../data/abstractions/IFilmAllInfo';
+import { Film } from '../../types/film.ts';
 
-type BreadcrumbsProps = {
-  film: IFilmAllInfo;
-};
+interface BreadcrumbsProps {
+	film?: Film;
+}
 
 const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ film }) => (
   <nav className="breadcrumbs">
     <ul className="breadcrumbs__list">
       <li className="breadcrumbs__item">
-        <Link to={`/films/${film.id}`} className="breadcrumbs__link">
-          {film.name}
+        <Link to={`/films/${film?.id || ''}`} className="breadcrumbs__link">
+          {film?.name}
         </Link>
       </li>
       <li className="breadcrumbs__item">
         <a className="breadcrumbs__link">
-          {LOCALE.ADD_REWIEW}
+          Add review
         </a>
       </li>
     </ul>
   </nav>
 );
 
-export default Breadcrumbs;
+export const BreadcrumbsMemo = memo(Breadcrumbs);
