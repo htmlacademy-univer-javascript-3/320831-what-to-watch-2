@@ -9,7 +9,7 @@ import { Action } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
 import { ApiStatusPendingEnum, EReducers } from '../../types/api.ts';
 import { testFilms } from '../../mocks/mocks.ts';
-import { Player } from './player.tsx';
+import { Player } from './Player.tsx';
 
 const api = createAPI();
 const middlewares = [thunk.withExtraArgument(api)];

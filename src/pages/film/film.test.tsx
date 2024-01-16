@@ -8,7 +8,7 @@ import { testFilms } from '../../mocks/mocks.ts';
 import { render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
-import { Film } from './film.tsx';
+import { Film } from './Film.tsx';
 
 describe('film', () => {
   const api = createAPI();

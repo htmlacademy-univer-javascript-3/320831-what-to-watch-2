@@ -8,7 +8,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { RootState } from '../../store';
 import { ApiStatusPendingEnum, EReducers } from '../../types/api.ts';
 import { testFilms } from '../../mocks/mocks.ts';
-import { Main } from './main.tsx';
+import { Main } from './Main.tsx';
 
 
 describe('MainPage', () => {

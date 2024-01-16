@@ -9,7 +9,7 @@ import { ApiStatusPendingEnum, EReducers } from '../../types/api.ts';
 import { testFilms } from '../../mocks/mocks.ts';
 import { RootState } from '../../store';
 import { FilmCardMemo } from './film-card.tsx';
-import { Film } from '../../pages/film/film.tsx';
+import { Film } from '../../pages/film/Film.tsx';
 
 describe('FilmCard', () => {
   const api = createAPI();

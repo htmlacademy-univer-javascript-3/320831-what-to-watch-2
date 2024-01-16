@@ -1,12 +1,12 @@
 import { Route, Routes } from 'react-router-dom';
-import { Film } from '../../pages/film/film.tsx';
+import { Film } from '../../pages/film/Film.tsx';
 import { FC } from 'react';
-import { Main } from '../../pages/main/main.tsx';
+import { Main } from '../../pages/main/Main.tsx';
 import { Page404 } from '../../pages/page-404/page-404.tsx';
 import { SignIn } from '../../pages/sign-in/sign-in.tsx';
 
 import { AddReview } from '../../pages/add-review/add-review.tsx';
-import { Player } from '../../pages/player/player.tsx';
+import { Player } from '../../pages/player/Player.tsx';
 import { PrivateRoute } from './private-route.tsx';
 import { MyList } from '../../pages/my-list/my-list.tsx';
 import { useAppSelector } from '../../hooks/store.ts';
